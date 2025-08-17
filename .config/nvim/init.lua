@@ -61,3 +61,57 @@ vim.keymap.set("n", "<leader>h", "<cmd>echo 'Use h to move left'<cr>", { desc = 
 vim.keymap.set("n", "<leader>j", "<cmd>echo 'Use j to move down'<cr>", { desc = "Hint: j for down" })
 vim.keymap.set("n", "<leader>k", "<cmd>echo 'Use k to move up'<cr>", { desc = "Hint: k for up" })
 vim.keymap.set("n", "<leader>l", "<cmd>echo 'Use l to move right'<cr>", { desc = "Hint: l for right" })
+
+-- Window splitting and navigation
+vim.keymap.set("n", "<leader>sv", "<C-w>v", { desc = "Split window vertically" })
+vim.keymap.set("n", "<leader>sh", "<C-w>s", { desc = "Split window horizontally" })
+vim.keymap.set("n", "<leader>se", "<C-w>=", { desc = "Make splits equal size" })
+vim.keymap.set("n", "<leader>sx", "<cmd>close<CR>", { desc = "Close current split" })
+
+-- Window navigation
+vim.keymap.set("n", "<C-h>", "<C-w>h", { desc = "Go to left window" })
+vim.keymap.set("n", "<C-j>", "<C-w>j", { desc = "Go to lower window" })
+vim.keymap.set("n", "<C-k>", "<C-w>k", { desc = "Go to upper window" })
+vim.keymap.set("n", "<C-l>", "<C-w>l", { desc = "Go to right window" })
+
+-- Window resizing
+vim.keymap.set("n", "<C-Up>", "<cmd>resize +2<CR>", { desc = "Increase window height" })
+vim.keymap.set("n", "<C-Down>", "<cmd>resize -2<CR>", { desc = "Decrease window height" })
+vim.keymap.set("n", "<C-Left>", "<cmd>vertical resize -2<CR>", { desc = "Decrease window width" })
+vim.keymap.set("n", "<C-Right>", "<cmd>vertical resize +2<CR>", { desc = "Increase window width" })
+
+-- Tips display functions
+vim.keymap.set("n", "<leader>ts", function()
+  vim.notify([[
+Window Splitting Tips:
+• <leader>sv - Split vertically (side by side)
+• <leader>sh - Split horizontally (top/bottom)
+• <leader>se - Make all splits equal size
+• <leader>sx - Close current split
+• <C-w>o - Close all other windows (keep current)
+]], vim.log.levels.INFO, { title = "Splitting Tips" })
+end, { desc = "Show splitting tips" })
+
+vim.keymap.set("n", "<leader>tn", function()
+  vim.notify([[
+Window Navigation Tips:
+• <C-h/j/k/l> - Move between windows (like vim motions)
+• <C-w>w - Cycle through windows
+• <C-w>p - Go to previous window
+• <C-w>r - Rotate windows downward/rightward
+• <C-w>R - Rotate windows upward/leftward
+• <C-w>x - Exchange current window with next one
+]], vim.log.levels.INFO, { title = "Navigation Tips" })
+end, { desc = "Show navigation tips" })
+
+vim.keymap.set("n", "<leader>tr", function()
+  vim.notify([[
+Window Resizing Tips:
+• <C-Up/Down> - Resize height
+• <C-Left/Right> - Resize width
+• <C-w>+ - Increase height by 1
+• <C-w>- - Decrease height by 1
+• <C-w>> - Increase width by 1
+• <C-w>< - Decrease width by 1
+]], vim.log.levels.INFO, { title = "Resizing Tips" })
+end, { desc = "Show resizing tips" })
