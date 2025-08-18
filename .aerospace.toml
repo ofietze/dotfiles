@@ -55,8 +55,12 @@ automatically-unhide-macos-hidden-apps = false
     inner.horizontal = 10
     inner.vertical =   10
     outer.left =       10
-    outer.bottom = [{ monitor.".*MacBook Pro.*" = 10 }, { monitor.".*MacBook Air.*" = 40 }, 40]
-    outer.top = [{ monitor.".*MacBook Pro.*" = 40 }, { monitor.".*MacBook Air.*" = 10 }, 10]
+    outer.bottom = 10 
+    outer.top = [
+        { monitor."built-in" = 10 },
+        { monitor."main" = 40 },
+        40 
+    ]
     outer.right =      10
 
 # 'main' binding mode declaration
