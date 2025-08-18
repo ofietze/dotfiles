@@ -53,13 +53,14 @@ sketchybar --add event aerospace_workspace_change
 
 # Add workspaces for all monitors
 for monitor in $(aerospace list-monitors --format "%{monitor-appkit-nsscreen-screens-id}"); do
-  for sid in $(aerospace list-workspaces --monitor "$monitor"); do
+  for sid in $(aerospace list-workspaces --monitor "$monitor" --empty no); do
     # Determine which display this workspace should be shown on
     display_id="1"
 
     case "$sid" in
       [a-zA-Z]*)
         display_id="2"
+        display_id="1"
         ;;
       *)
     esac
@@ -75,7 +76,7 @@ for monitor in $(aerospace list-monitors --format "%{monitor-appkit-nsscreen-scr
       background.drawing=on \
       background.border_color=0xAAFFFFFF \
       background.border_width=0 \
-      background.height=25 \
+      background.height=20 \
       icon="$sid" \
       icon.padding_left=10 \
       icon.shadow.distance=4 \
