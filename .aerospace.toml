@@ -4,9 +4,7 @@ after-startup-command = [
   'exec-and-forget borders active_color=0xffe1e3e4 inactive_color=0xff494d64 width=5.0', 'exec-and-forget sketchybar',
 ]
 
-exec-on-workspace-change = ['/bin/bash', '-c',
-    'sketchybar --trigger aerospace_workspace_change FOCUSED_WORKSPACE=$AEROSPACE_FOCUSED_WORKSPACE'
-]
+exec-on-workspace-change = ['/bin/bash', '-c', 'sketchybar --trigger aerospace_workspace_change FOCUSED_WORKSPACE=$AEROSPACE_FOCUSED_WORKSPACE PREV_WORKSPACE=$AEROSPACE_PREV_WORKSPACE && ~/.config/sketchybar/plugins/update_workspace_icons.sh']
 
 # Start AeroSpace at login
 start-at-login = true
@@ -57,8 +55,12 @@ automatically-unhide-macos-hidden-apps = false
     inner.horizontal = 10
     inner.vertical =   10
     outer.left =       10
-    outer.bottom =     40
-    outer.top =        10
+    outer.bottom =     10
+    outer.top = [
+        { monitor."built-in" = 10 },
+        { monitor."main" = 40 },
+        40 
+    ]
     outer.right =      10
 
 # 'main' binding mode declaration
@@ -95,8 +97,8 @@ automatically-unhide-macos-hidden-apps = false
     # '''
 
     # See: https://nikitabobko.github.io/AeroSpace/commands#layout
-    alt-slash = 'layout tiles horizontal vertical'
-    alt-comma = 'layout accordion horizontal vertical'
+    alt-slash = 'layout tiles vertical horizontal'
+    alt-comma = 'layout accordion vertical horizontal'
 
     # See: https://nikitabobko.github.io/AeroSpace/commands#focus
     alt-h = 'focus left'
@@ -171,6 +173,9 @@ automatically-unhide-macos-hidden-apps = false
     up = 'volume up'
     shift-down = ['volume set 0', 'mode main']
 [workspace-to-monitor-force-assignment]
-    A = '^built-in retina display$'  # Case insensitive regex match
-    S = '^built-in retina display$'  # Case insensitive regex match
-    D = '^built-in retina display$'  # Case insensitive regex match
+    1 = 'main'
+    2 = 'main'
+    3 = 'main'
+    A = 'secondary'
+    S = 'secondary'
+    D = 'secondary'
