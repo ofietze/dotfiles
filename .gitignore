@@ -3,4 +3,4 @@
 !.gitignore
 !.aerospace.toml
 !.config
-
+.config/nvim/lazy-lock.json

@@ -60,7 +60,6 @@ for monitor in $(aerospace list-monitors --format "%{monitor-appkit-nsscreen-scr
     case "$sid" in
       [a-zA-Z]*)
         display_id="2"
-        display_id="1"
         ;;
       *)
     esac
