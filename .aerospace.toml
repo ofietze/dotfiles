@@ -55,8 +55,12 @@ automatically-unhide-macos-hidden-apps = false
     inner.horizontal = 10
     inner.vertical =   10
     outer.left =       10
-    outer.bottom = 40 
-    outer.top = 10
+    outer.bottom =     10 
+    outer.top = [
+        { monitor."built-in" = 10 },
+        { monitor."main" = 40 },
+        40 
+    ]
     outer.right =      10
 
 # 'main' binding mode declaration
@@ -123,9 +127,6 @@ automatically-unhide-macos-hidden-apps = false
     alt-8 = 'workspace 8'
     alt-9 = 'workspace 9'
     alt-0 = 'workspace 10'
-    alt-a = 'workspace A' # In your config, you can drop workspace bindings that you don't need
-    alt-d = 'workspace D'
-    alt-s = 'workspace S'
 
     # See: https://nikitabobko.github.io/AeroSpace/commands#move-node-to-workspace
     alt-shift-1 = 'move-node-to-workspace 1'
@@ -138,9 +139,6 @@ automatically-unhide-macos-hidden-apps = false
     alt-shift-8 = 'move-node-to-workspace 8'
     alt-shift-9 = 'move-node-to-workspace 9'
     alt-shift-0 = 'move-node-to-workspace 10'
-    alt-shift-a = 'move-node-to-workspace A'
-    alt-shift-d = 'move-node-to-workspace D'
-    alt-shift-s = 'move-node-to-workspace S'
 
     # See: https://nikitabobko.github.io/AeroSpace/commands#workspace-back-and-forth
     alt-tab = 'workspace-back-and-forth'
@@ -172,6 +170,6 @@ automatically-unhide-macos-hidden-apps = false
     1 = 'main'
     2 = 'main'
     3 = 'main'
-    A = 'secondary'
-    S = 'secondary'
-    D = 'secondary'
+    8 = 'secondary'
+    9 = 'secondary'
+    0 = 'secondary'
