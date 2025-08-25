@@ -131,5 +131,8 @@ sketchybar --add item clock right \
            --set battery update_freq=120 script="$PLUGIN_DIR/battery.sh" \
            --subscribe battery system_woke power_source_change
 
+sketchybar --add item network right \
+           --set network update_freq=2 icon=🌐 script="$PLUGIN_DIR/network.sh"
+
 ##### Force all scripts to run the first time (never do this in a script) #####
 sketchybar --update
