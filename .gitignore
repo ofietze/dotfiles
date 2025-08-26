@@ -9,5 +9,7 @@
 !.newsboat/
 !.newsboat/config
 !.newsboat/urls
+!README.md
+!screen.png
 
 .config/nvim/lazy-lock.json
