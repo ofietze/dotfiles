@@ -1,20 +1,22 @@
 # Newsboat Configuration
 
-# Colors and styling
-color background          color223 default
-color listnormal          color223 default
-color listnormal_unread   color2   default bold
-color listfocus           color223 color237 bold
-color listfocus_unread    color223 color237 bold
-color info                color8   color236
-color article             color223 default
+# Colors and styling - High contrast dark theme
+color background          color11  color0    # Bright yellow on black
+color listnormal          color7   color0    # Light gray on black
+color listnormal_unread   color10  color0 bold    # Bright green for unread items
+color listfocus           color0   color14   # Black text on bright cyan background
+color listfocus_unread    color0   color9 bold    # Black on bright red for unread focus
+color info                color11  color8    # Bright yellow on dark gray info bar
+color article             color14  color0    # Bright cyan text for articles
 
-# Article view highlighting - separate titles and headlines from body text
-highlight article "^[A-Z][^a-z]*$" color6 default bold
-highlight article "^#+\s.*" color4 default bold
-highlight article "^[A-Za-z0-9][^.!?]*[.!?]$" color5 default
-highlight article "^\\*\\*.*\\*\\*" color3 default bold
-highlight article "^__.*__" color3 default bold
+# Article view highlighting with high contrast colors
+highlight article "^[A-Z][^a-z]*$" color13 color0 bold        # Bright magenta headers on black
+highlight article "^#+\s.*" color12 color0 bold               # Bright blue headers on black
+highlight article "^[A-Za-z0-9][^.!?]*[.!?]$" color10 color0  # Bright green sentences on black
+highlight article "^\\*\\*.*\\*\\*" color11 color0 bold       # Bright yellow bold text on black
+highlight article "^__.*__" color11 color0 bold               # Bright yellow underlined text on black
+highlight article "\\[[0-9]+\\]" color14 color0              # Bright cyan reference numbers on black
+highlight article "https?://[^ ]+" color12 color0 underline   # Bright blue underlined URLs on black
 
 # Interface styling
 feedlist-format     "%4i %n %11u %t"
