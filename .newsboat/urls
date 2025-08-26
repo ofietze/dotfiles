@@ -6,14 +6,8 @@ https://www.wired.com/feed/rss "~Wired" tech
 
 # International News
 http://feeds.bbci.co.uk/news/world/rss.xml "~BBC World" international
-https://feeds.reuters.com/reuters/topNews "~Reuters" international
 https://feeds.npr.org/1001/rss.xml "~NPR News" international
 
 # Netherlands News (English)
 https://www.dutchnews.nl/feed/ "~DutchNews.nl" netherlands
 https://nltimes.nl/rss.xml "~NL Times" netherlands
-https://hollandtimes.nl/feed/ "~Holland Times" netherlands
-https://feeds.thelocal.com/rss/nl "~The Local NL" netherlands
-
-# Youtube
-https://www.youtube.com/feeds/videos.xml?channel_id=UCXuqSBlHAE6Xw-yeJA0Tunw
