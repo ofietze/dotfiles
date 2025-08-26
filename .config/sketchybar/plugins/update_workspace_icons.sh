@@ -2,163 +2,147 @@
 
 CONFIG_DIR="$HOME/.config/sketchybar"
 
-update_space_icons() {
-    local sid=$1
-    local apps=$(aerospace list-windows --workspace "$sid" | awk -F'|' '{gsub(/^ *| *$/, "", $2); print $2}')
-
-    # Check if space exists in sketchybar first
-    if ! sketchybar --query space.$sid >/dev/null 2>&1; then
-        # Space doesn't exist, create it
-        create_workspace_item "$sid"
-    fi
-
-    # Show workspace if it has apps or is currently focused, otherwise hide it
-    if [ "${apps}" != "" ] || [ "$sid" = "$(aerospace list-workspaces --focused)" ]; then
-        sketchybar --set space.$sid drawing=on
+# Cache aerospace data to avoid repeated calls
+cache_aerospace_data() {
+    export MONITOR_COUNT=$(aerospace list-monitors | wc -l | tr -d ' ')
+    export FOCUSED_WORKSPACE=$(aerospace list-workspaces --focused)
+    
+    # Build workspace info in one pass
+    declare -gA WORKSPACE_APPS
+    declare -gA WORKSPACE_EXISTS
+    
+    for sid in {1..10}; do
+        [[ "$sid" == "0" ]] && continue
         
-        if [ "${apps}" != "" ]; then
-            icon_strip=" "
-            while read -r app; do
-                icon_strip+=" $($CONFIG_DIR/plugins/icon_map_fn.sh "$app")"
-            done <<<"${apps}"
-            sketchybar --set space.$sid label="$icon_strip"
-        else
-            sketchybar --set space.$sid label=""
+        apps=$(aerospace list-windows --workspace "$sid" 2>/dev/null | awk -F'|' '{gsub(/^ *| *$/, "", $2); print $2}')
+        WORKSPACE_APPS[$sid]="$apps"
+        
+        if sketchybar --query space.$sid >/dev/null 2>&1; then
+            WORKSPACE_EXISTS[$sid]=1
         fi
-    else
-        # Hide empty inactive workspaces
-        sketchybar --set space.$sid drawing=off
+    done
+}
+
+update_workspace_batch() {
+    local batch_commands=()
+    
+    for sid in {1..10}; do
+        [[ "$sid" == "0" ]] && continue
+        
+        local apps="${WORKSPACE_APPS[$sid]}"
+        local should_show=false
+        
+        # Check if workspace should be visible
+        if [[ -n "$apps" || "$sid" == "$FOCUSED_WORKSPACE" ]]; then
+            should_show=true
+        fi
+        
+        if [[ "${WORKSPACE_EXISTS[$sid]}" == "1" ]]; then
+            if $should_show; then
+                # Build icon strip efficiently
+                local icon_strip=""
+                if [[ -n "$apps" ]]; then
+                    icon_strip=" "
+                    while IFS= read -r app; do
+                        [[ -n "$app" ]] && icon_strip+=" $($CONFIG_DIR/plugins/icon_map_fn.sh "$app")"
+                    done <<<"$apps"
+                fi
+                
+                batch_commands+=(--set space.$sid drawing=on label="$icon_strip")
+            else
+                batch_commands+=(--set space.$sid drawing=off)
+            fi
+        elif $should_show; then
+            # Create new workspace
+            create_workspace_item "$sid"
+        fi
+    done
+    
+    # Hide workspace 0 if it exists
+    if sketchybar --query space.0 >/dev/null 2>&1; then
+        batch_commands+=(--set space.0 drawing=off)
     fi
+    
+    # Execute all updates in one command
+    [[ ${#batch_commands[@]} -gt 0 ]] && sketchybar "${batch_commands[@]}"
 }
 
 create_workspace_item() {
     local sid=$1
+    local display_id="1"
     
-    # Determine monitor count
-    monitor_count=$(aerospace list-monitors | wc -l | tr -d ' ')
-    
-    # Determine which display this workspace should be shown on
-    display_id="1"
-    
-    if [ "$monitor_count" -eq 2 ]; then
-        case "$sid" in
-            [89]|10)
-                display_id="2"
-                ;;
-            *)
-                display_id="1"
-                ;;
-        esac
+    if [[ "$MONITOR_COUNT" -eq 2 && ("$sid" == "8" || "$sid" == "9" || "$sid" == "10") ]]; then
+        display_id="2"
     fi
     
     sketchybar --add item space.$sid left \
       --set space.$sid display="$display_id" \
-      --subscribe space.$sid aerospace_workspace_change \
-      --set space.$sid \
-      drawing=off \
-      background.color=0x44ffffff \
-      background.corner_radius=5 \
-      background.drawing=on \
-      background.border_color=0xAAFFFFFF \
-      background.border_width=0 \
-      background.height=20 \
-      icon="$sid" \
-      icon.padding_left=10 \
-      icon.shadow.distance=4 \
-      icon.shadow.color=0xA0000000 \
-      label.font="sketchybar-app-font:Regular:16.0" \
-      label.padding_right=20 \
-      label.padding_left=0 \
-      label.y_offset=-1 \
-      label.shadow.drawing=off \
-      label.shadow.color=0xA0000000 \
-      label.shadow.distance=4 \
-      click_script="aerospace workspace $sid" \
-      script="$CONFIG_DIR/plugins/aerospace.sh $sid"
+            drawing=off \
+            background.color=0x44ffffff \
+            background.corner_radius=5 \
+            background.drawing=on \
+            background.border_color=0xAAFFFFFF \
+            background.border_width=0 \
+            background.height=20 \
+            icon="$sid" \
+            icon.padding_left=10 \
+            icon.shadow.distance=4 \
+            icon.shadow.color=0xA0000000 \
+            label.font="sketchybar-app-font:Regular:16.0" \
+            label.padding_right=20 \
+            label.padding_left=0 \
+            label.y_offset=-1 \
+            label.shadow.drawing=off \
+            label.shadow.color=0xA0000000 \
+            label.shadow.distance=4 \
+            click_script="aerospace workspace $sid" \
+            script="$CONFIG_DIR/plugins/aerospace.sh $sid" \
+      --subscribe space.$sid aerospace_workspace_change
+    
+    WORKSPACE_EXISTS[$sid]=1
 }
 
-reconfigure_all_workspaces() {
-    # Get monitor count
-    monitor_count=$(aerospace list-monitors | wc -l | tr -d ' ')
+reconfigure_displays() {
+    cache_aerospace_data
     
-    # Update display assignments and visibility for all existing spaces
+    local batch_commands=()
     for sid in {1..10}; do
-        # Skip workspace 0 - never show it
-        if [ "$sid" = "0" ]; then
-            continue
+        [[ "$sid" == "0" ]] && continue
+        [[ "${WORKSPACE_EXISTS[$sid]}" != "1" ]] && continue
+        
+        local apps="${WORKSPACE_APPS[$sid]}"
+        local should_show=false
+        
+        if [[ -n "$apps" || "$sid" == "$FOCUSED_WORKSPACE" ]]; then
+            should_show=true
         fi
         
-        if sketchybar --query space.$sid >/dev/null 2>&1; then
-            # Check if workspace has apps or is focused
-            apps=$(aerospace list-windows --workspace "$sid" | awk -F'|' '{gsub(/^ *| *$/, "", $2); print $2}')
-            focused_workspace=$(aerospace list-workspaces --focused)
-            
-            if [ "$monitor_count" -eq 1 ]; then
-                # Show workspace on single monitor if it has apps or is focused
-                if [ "${apps}" != "" ] || [ "$sid" = "$focused_workspace" ]; then
-                    sketchybar --set space.$sid display=1 drawing=on
-                else
-                    sketchybar --set space.$sid drawing=off
-                fi
+        if [[ "$MONITOR_COUNT" -eq 1 ]]; then
+            if $should_show; then
+                batch_commands+=(--set space.$sid display=1 drawing=on)
             else
-                # Two monitor setup: 1-7 on main, 8-10 on secondary
-                case "$sid" in
-                    [89]|10)
-                        if [ "${apps}" != "" ] || [ "$sid" = "$focused_workspace" ]; then
-                            sketchybar --set space.$sid display=2 drawing=on
-                        else
-                            sketchybar --set space.$sid drawing=off
-                        fi
-                        ;;
-                    *)
-                        if [ "${apps}" != "" ] || [ "$sid" = "$focused_workspace" ]; then
-                            sketchybar --set space.$sid display=1 drawing=on
-                        else
-                            sketchybar --set space.$sid drawing=off
-                        fi
-                        ;;
-                esac
+                batch_commands+=(--set space.$sid drawing=off)
+            fi
+        else
+            local display_id="1"
+            [[ "$sid" == "8" || "$sid" == "9" || "$sid" == "10" ]] && display_id="2"
+            
+            if $should_show; then
+                batch_commands+=(--set space.$sid display=$display_id drawing=on)
+            else
+                batch_commands+=(--set space.$sid drawing=off)
             fi
         fi
     done
     
-    # Always hide workspace 0 if it exists
-    if sketchybar --query space.0 >/dev/null 2>&1; then
-        sketchybar --set space.0 drawing=off
-    fi
+    [[ ${#batch_commands[@]} -gt 0 ]] && sketchybar "${batch_commands[@]}"
 }
 
-# If called with "reconfigure" argument, just reconfigure displays
-if [ "$1" = "reconfigure" ]; then
-    reconfigure_all_workspaces
+# Main execution
+if [[ "$1" == "reconfigure" ]]; then
+    reconfigure_displays
     exit 0
 fi
 
-# Update only active workspaces (with windows) and the currently focused workspace
-for sid in {1..10}; do
-    # Skip workspace 0 - never show it
-    if [ "$sid" = "0" ]; then
-        continue
-    fi
-    
-    # Check if workspace has windows or is currently focused
-    apps=$(aerospace list-windows --workspace "$sid" | awk -F'|' '{gsub(/^ *| *$/, "", $2); print $2}')
-    focused_workspace=$(aerospace list-workspaces --focused)
-    
-    if [ "${apps}" != "" ] || [ "$sid" = "$focused_workspace" ]; then
-        update_space_icons "$sid"
-    else
-        # Hide empty inactive workspaces if they exist
-        if sketchybar --query space.$sid >/dev/null 2>&1; then
-            sketchybar --set space.$sid drawing=off
-        fi
-    fi
-done
-
-# Also hide workspace 0 if it exists
-if sketchybar --query space.0 >/dev/null 2>&1; then
-    sketchybar --set space.0 drawing=off
-fi
-
-# Reconfigure displays based on current monitor setup
-reconfigure_all_workspaces
+cache_aerospace_data
+update_workspace_batch
