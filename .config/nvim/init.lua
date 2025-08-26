@@ -56,12 +56,6 @@ vim.keymap.set("n", "<leader>w", "<cmd>w<cr>", { desc = "Save file" })
 vim.keymap.set("n", "<leader>q", "<cmd>q<cr>", { desc = "Quit" })
 vim.keymap.set("n", "<Esc>", "<cmd>nohlsearch<CR>", { desc = "Clear search highlights" })
 
--- Movement practice helpers
-vim.keymap.set("n", "<leader>h", "<cmd>echo 'Use h to move left'<cr>", { desc = "Hint: h for left" })
-vim.keymap.set("n", "<leader>j", "<cmd>echo 'Use j to move down'<cr>", { desc = "Hint: j for down" })
-vim.keymap.set("n", "<leader>k", "<cmd>echo 'Use k to move up'<cr>", { desc = "Hint: k for up" })
-vim.keymap.set("n", "<leader>l", "<cmd>echo 'Use l to move right'<cr>", { desc = "Hint: l for right" })
-
 -- Window splitting and navigation
 vim.keymap.set("n", "<leader>sv", "<C-w>v", { desc = "Split window vertically" })
 vim.keymap.set("n", "<leader>sh", "<C-w>s", { desc = "Split window horizontally" })

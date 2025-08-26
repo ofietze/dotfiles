@@ -1,0 +1,60 @@
+# Newsboat Configuration
+
+# Colors and styling
+color background          color223 default
+color listnormal          color223 default
+color listnormal_unread   color2   default bold
+color listfocus           color223 color237 bold
+color listfocus_unread    color223 color237 bold
+color info                color8   color236
+color article             color223 default
+
+# Article view highlighting - separate titles and headlines from body text
+highlight article "^[A-Z][^a-z]*$" color6 default bold
+highlight article "^#+\s.*" color4 default bold
+highlight article "^[A-Za-z0-9][^.!?]*[.!?]$" color5 default
+highlight article "^\\*\\*.*\\*\\*" color3 default bold
+highlight article "^__.*__" color3 default bold
+
+# Interface styling
+feedlist-format     "%4i %n %11u %t"
+articlelist-format  "%4i %f %D   %?T?|%-17T|  ?%t"
+
+# Key bindings
+bind-key j down
+bind-key k up
+bind-key j next articlelist
+bind-key k prev articlelist
+bind-key J next-feed articlelist
+bind-key K prev-feed articlelist
+bind-key G end
+bind-key g home
+bind-key d pagedown
+bind-key u pageup
+bind-key l open
+bind-key h quit
+bind-key a toggle-article-read
+bind-key n next-unread
+bind-key N prev-unread
+bind-key D pb-download
+bind-key U show-urls
+bind-key x pb-delete
+
+# Browser
+browser "open %u"
+
+# Refresh settings
+auto-reload yes
+reload-time 120
+reload-threads 4
+
+# Display settings
+show-read-feeds no
+show-read-articles yes
+max-items 100
+
+# Date format
+datetime-format "%Y-%m-%d %H:%M"
+
+# Feed sorting
+feed-sort-order unreadarticlecount-asc

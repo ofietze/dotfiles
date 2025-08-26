@@ -1,6 +1,12 @@
-*.*
-/**
+*
 !.gitignore
 !.aerospace.toml
-!.config
+!.config/
+!.config/nvim/
+!.config/nvim/**
+!.config/sketchybar/
+!.config/sketchybar/**
+!.newsboat/
+!.newsboat/**
+
 .config/nvim/lazy-lock.json
