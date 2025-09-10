@@ -28,7 +28,7 @@ NETWORK_DATA=$(netstat -I "$INTERFACE" -b 2>/dev/null | tail -1)
 }
 
 # Extract bytes efficiently
-read -r _ _ _ _ _ _ _ DOWN_BYTES _ _ UP_BYTES _ <<< "$NETWORK_DATA"
+read -r _ _ _ _ _ _ DOWN_BYTES _ _ UP_BYTES _ <<< "$NETWORK_DATA"
 
 CURRENT_TIME=$(date +%s)
 
