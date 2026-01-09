@@ -114,8 +114,4 @@ vim.cmd([[hi Comment guifg=#9ece6a gui=bold]])
 vim.cmd([[hi LineNr guifg=#1abc9c gui=bold]])
 vim.cmd([[hi LineNrAbove guifg=#27a1b9 ]])
 vim.cmd([[hi LineNrBelow guifg=#27a1b9 ]])
-vim.cmd([[set scrolloff=999]])
-
-vim.api.nvim_set_keymap('n', 'k', 'kzz', { noremap = true, silent = true })
-vim.api.nvim_set_keymap('n', 'j', 'jzz', { noremap = true, silent = true })
 
