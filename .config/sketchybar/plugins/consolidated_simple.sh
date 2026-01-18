@@ -30,19 +30,6 @@ case "$NAME" in
         fi
         ;;
         
-    "volume")
-        if [ "$SENDER" = "volume_change" ]; then
-            VOLUME="$INFO"
-            case "$VOLUME" in
-                [6-9][0-9]|100) ICON="󰕾" ;;
-                [3-5][0-9]) ICON="󰖀" ;;
-                [1-9]|[1-2][0-9]) ICON="󰕿" ;;
-                *) ICON="󰖁" ;;
-            esac
-            batch_updates+=(--set "$NAME" icon="$ICON" label="$VOLUME%")
-        fi
-        ;;
-        
     "battery")
         PERCENTAGE="$(pmset -g batt | grep -Eo "\d+%" | cut -d% -f1)"
         CHARGING="$(pmset -g batt | grep 'AC Power')"

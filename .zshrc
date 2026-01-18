@@ -12,17 +12,23 @@ source "$HOME/.local/share/zinit/zinit.git/zinit.zsh"
 autoload -Uz _zinit
 (( ${+_comps} )) && _comps[zinit]=_zinit
 ### End of Zinit's installer chunk
+setopt AUTO_CD # Allows to ommit cd
+
 
 # Plugins
 zinit wait lucid light-mode for \
         OMZP::git \
+        OMZP::zsh-interactive-cd \
         OMZP::alias-finder \
         OMZP::brew \
-        OMZP::aliases \
         zsh-users/zsh-autosuggestions \
         zsh-users/zsh-completions \
+        zsh-users/zsh-syntax-highlighting \
+        zsh-users/zsh-history-substring-search \
         zdharma-continuum/fast-syntax-highlighting \
         zdharma-continuum/history-search-multi-word
+
+zinit ice wait atload'_history_substring_search_config'
 
 # Custom aliases
 alias src="source ~/.zshrc"

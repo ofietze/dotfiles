@@ -45,15 +45,12 @@ sketchybar \
   --set monitor_watcher drawing=off update_freq=2 \
            script="$PLUGIN_DIR/monitor_watcher.sh" \
   --add item clock right \
-  --set clock update_freq=10 icon= script="$PLUGIN_DIR/consolidated_simple.sh" \
-  --add item volume right \
-  --set volume script="$PLUGIN_DIR/consolidated_simple.sh" \
-  --subscribe volume volume_change \
+  --set clock update_freq=1 icon= script="$PLUGIN_DIR/consolidated_simple.sh" \
   --add item battery right \
   --set battery update_freq=120 script="$PLUGIN_DIR/consolidated_simple.sh" \
   --subscribe battery system_woke power_source_change \
   --add item network right \
-  --set network update_freq=2 icon=🌐 script="$PLUGIN_DIR/network.sh"
+  --set network update_freq=1 script="$PLUGIN_DIR/network.sh"
 
 # Batch all workspace creation
 workspace_args=()
