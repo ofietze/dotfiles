@@ -17,12 +17,18 @@ brew install ripgrep
 brew install ifstat
 brew install sketchybar
 
+brew install --cask ghostty
 brew install --cask nikitabobko/tap/aerospace
+brew install --cask visual-studio-code
 
 ### Terminal
+brew install zsh
 brew install neovim
+brew install zinit
 brew install starship
+brew install zsh-completions
 brew install zsh-autosuggestions
+brew install zsh-history-substring-search
 brew install zsh-fast-syntax-highlighting
 brew install lazygit
 brew install zellij 
@@ -35,7 +41,6 @@ brew install --cask font-sf-mono
 brew install --cask font-sf-pro
 brew install --cask font-hack-nerd-font
 brew install --cask font-jetbrains-mono
-brew install --cask font-fira-code
 
 # macOS Settings
 echo "Changing macOS defaults..."
@@ -70,8 +75,6 @@ defaults write com.apple.finder ShowStatusBar -bool false
 defaults write com.apple.TimeMachine DoNotOfferNewDisksForBackup -bool YES
 defaults write com.apple.Safari AutoOpenSafeDownloads -bool false
 defaults write com.apple.Safari IncludeDevelopMenu -bool true
-defaults write com.apple.Safari WebKitDeveloperExtrasEnabledPreferenceKey -bool true
-defaults write com.apple.Safari com.apple.Safari.ContentPageGroupIdentifier.WebKit2DeveloperExtrasEnabled -bool true
 defaults write NSGlobalDomain WebKitDeveloperExtras -bool true
 defaults write com.apple.mail AddressesIncludeNameOnPasteboard -bool false
 defaults write -g NSWindowShouldDragOnGesture YES
@@ -82,12 +85,8 @@ echo "Planting Configuration Files..."
 [ ! -d "$HOME/dotfiles" ] && git clone --bare git@github.com:ofietze/dotfiles.git $HOME
 git --git-dir=$HOME checkout main
 
-# Installing Fonts
-git clone git@github.com:shaunsingh/SFMono-Nerd-Font-Ligaturized.git /tmp/SFMono_Nerd_Font
-mv /tmp/SFMono_Nerd_Font/* $HOME/Library/Fonts
-rm -rf /tmp/SFMono_Nerd_Font/
-
-
+echo "Setting up zsh..."
+chsh -s $(which zsh)
 source $HOME/.zshrc
 
 # Start Services
@@ -95,4 +94,4 @@ echo "Starting Services (grant permissions)..."
 brew services start sketchybar
 
 csrutil status
-echo "Installation complete...\n"
+echo "Installation complete...\n Close this terminal and open ghostty"
