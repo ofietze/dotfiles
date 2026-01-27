@@ -2,7 +2,5 @@
 ![screen](screen.png)
 [aerospace](https://nikitabobko.github.io/AeroSpace/guide)
 [sketchybar](https://felixkratz.github.io/SketchyBar/setup)
-[newsboat](https://newsboat.org/)
 
-install fonts
-brew install --cask font-sketchybar-app-font
+Run .install.sh for automatic setup

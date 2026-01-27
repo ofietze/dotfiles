@@ -29,6 +29,7 @@ brew install zellij
 
 
 ### Fonts
+brew install --cask font-sketchybar-app-font
 brew install --cask sf-symbols
 brew install --cask font-sf-mono
 brew install --cask font-sf-pro
