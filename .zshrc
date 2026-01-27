@@ -43,6 +43,7 @@ alias cc="claude --continue"
 alias dev="cd ~/Developer"
 alias z="zellij"
 alias gs="git status"
+alias l="ls -a"
 
 # Init theme
 eval "$(starship init zsh)"

@@ -20,6 +20,7 @@ brew install sketchybar
 brew install --cask ghostty
 brew install --cask nikitabobko/tap/aerospace
 brew install --cask visual-studio-code
+brew install --cask karabiner-elements
 
 ### Terminal
 brew install zsh
