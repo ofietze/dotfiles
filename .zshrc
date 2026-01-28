@@ -44,6 +44,11 @@ alias dev="cd ~/Developer"
 alias z="zellij"
 alias gs="git status"
 alias l="ls -a"
+alias commit="~./scripts/harver_git_commit.sh"
 
 # Init theme
 eval "$(starship init zsh)"
+
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
