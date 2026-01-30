@@ -9,5 +9,6 @@ brew analytics off
 
 brew install --cask ghostty
 
+echo "\n Installation done!"
 echo "Now setup your github ssh key 'ssh-keygen -t ed25519 -C "your_email@example.com"'"
 echo "Afterwards open ghostty and run .finishInstall.sh"

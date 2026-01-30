@@ -13,14 +13,6 @@ return {
     },
   },
 
-  -- Leap.nvim for quick navigation
-  {
-    url = "https://codeberg.org/andyg/leap.nvim",
-    config = function()
-      require('leap').add_default_mappings()
-    end
-  },
-
   -- vim-hardtime to discourage bad habits
   {
     "takac/vim-hardtime",
