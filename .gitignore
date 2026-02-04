@@ -1,15 +1,2 @@
 *
-!.gitignore
-!.aerospace.toml
-!.config/
-!.config/nvim/
-!.config/nvim/**
-!.config/sketchybar/
-!.config/sketchybar/**
-!.newsboat/
-!.newsboat/config
-!.newsboat/urls
-!README.md
-!screen.png
-
-.config/nvim/lazy-lock.json
+# Add everything manually to not push anything confidential
