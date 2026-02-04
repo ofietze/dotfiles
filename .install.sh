@@ -5,7 +5,9 @@ xcode-select --install
 
 echo "Installing Homebrew..."
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-brew analytics off
+echo 'eval "$(/opt/homebrew/bin/brew shellenv)"' >> ~/.bash_profile
+eval "$(/opt/homebrew/bin/brew shellenv)"
+source ~/.bash_profile
 
 brew install --cask ghostty
 
