@@ -30,6 +30,21 @@ zinit wait lucid light-mode for \
 
 zinit ice wait atload'_history_substring_search_config'
 
+# fzf global defaults
+export FZF_DEFAULT_OPTS="
+  --height=40%
+  --layout=reverse
+  --border
+  --preview-window=right:50%:wrap
+  --preview 'sed -n \"1,200p\" {}'
+  --bind 'ctrl-j:down,ctrl-k:up'
+  --bind 'ctrl-space:toggle'
+  --bind 'ctrl-a:select-all'
+  --bind 'ctrl-d:deselect-all'
+  --bind '?:toggle-preview'
+  --bind 'enter:execute(nvim {+})'
+"
+
 # Custom aliases
 alias src="source ~/.zshrc"
 alias n="nvim"
@@ -44,6 +59,7 @@ alias dev="cd ~/Developer"
 alias z="zellij"
 alias gs="git status"
 alias l="ls -a"
+alias f="fzf"
 alias commit="~./scripts/harver_git_commit.sh"
 
 # Init theme
