@@ -1,6 +1,10 @@
-#!/bin/bash
+#!/usr/bin/env zsh
 
 CONFIG_DIR="$HOME/.config/sketchybar"
+
+# Build aerospace -> sketchybar display mapping
+typeset -A DISPLAY_MAP
+while IFS=: read -r a s; do DISPLAY_MAP[$a]=$s; done < <("$CONFIG_DIR/plugins/display_map.sh")
 
 # Cache aerospace data to avoid repeated calls
 cache_aerospace_data() {
@@ -8,8 +12,8 @@ cache_aerospace_data() {
     export FOCUSED_WORKSPACE=$(aerospace list-workspaces --focused)
     
     # Build workspace info in one pass
-    declare -gA WORKSPACE_APPS
-    declare -gA WORKSPACE_EXISTS
+    typeset -gA WORKSPACE_APPS
+    typeset -gA WORKSPACE_EXISTS
     
     for sid in {1..10}; do
         [[ "$sid" == "0" ]] && continue
@@ -71,9 +75,13 @@ create_workspace_item() {
     local sid=$1
     local display_id="1"
     
-    if [[ "$MONITOR_COUNT" -eq 2 && ("$sid" == "8" || "$sid" == "9" || "$sid" == "10") ]]; then
-        display_id="2"
-    fi
+    # Query aerospace for actual monitor, then translate to sketchybar display
+    for mid in $(aerospace list-monitors | awk '{print $1}'); do
+        if aerospace list-workspaces --monitor "$mid" | grep -qx "$sid"; then
+            display_id="${DISPLAY_MAP[$mid]:-1}"
+            break
+        fi
+    done
     
     sketchybar --add item space.$sid left \
       --set space.$sid display="$display_id" \
@@ -105,33 +113,36 @@ create_workspace_item() {
 reconfigure_displays() {
     cache_aerospace_data
     
+    # Refresh display mapping
+    typeset -A DISPLAY_MAP
+    while IFS=: read -r a s; do DISPLAY_MAP[$a]=$s; done < <("$CONFIG_DIR/plugins/display_map.sh")
+    
+    # Build workspace -> sketchybar display map
+    typeset -A WS_DISPLAY
+    for mid in $(aerospace list-monitors | awk '{print $1}'); do
+        local sb_display="${DISPLAY_MAP[$mid]:-1}"
+        for ws in $(aerospace list-workspaces --monitor "$mid"); do
+            WS_DISPLAY[$ws]="$sb_display"
+        done
+    done
+    
     local batch_commands=()
     for sid in {1..10}; do
         [[ "$sid" == "0" ]] && continue
         [[ "${WORKSPACE_EXISTS[$sid]}" != "1" ]] && continue
         
         local apps="${WORKSPACE_APPS[$sid]}"
+        local display_id="${WS_DISPLAY[$sid]:-1}"
         local should_show=false
         
         if [[ -n "$apps" || "$sid" == "$FOCUSED_WORKSPACE" ]]; then
             should_show=true
         fi
         
-        if [[ "$MONITOR_COUNT" -eq 1 ]]; then
-            if $should_show; then
-                batch_commands+=(--set space.$sid display=1 drawing=on)
-            else
-                batch_commands+=(--set space.$sid drawing=off)
-            fi
+        if $should_show; then
+            batch_commands+=(--set space.$sid display=$display_id drawing=on)
         else
-            local display_id="1"
-            [[ "$sid" == "8" || "$sid" == "9" || "$sid" == "10" ]] && display_id="2"
-            
-            if $should_show; then
-                batch_commands+=(--set space.$sid display=$display_id drawing=on)
-            else
-                batch_commands+=(--set space.$sid drawing=off)
-            fi
+            batch_commands+=(--set space.$sid drawing=off)
         fi
     done
     

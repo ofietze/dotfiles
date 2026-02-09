@@ -30,6 +30,8 @@ vim.opt.autoindent = true
 vim.opt.splitright = true
 vim.opt.splitbelow = true
 
+vim.opt.clipboard = 'unnamedplus'
+
 -- Bootstrap lazy.nvim
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 if not vim.loop.fs_stat(lazypath) then

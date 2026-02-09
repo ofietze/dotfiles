@@ -4,19 +4,18 @@ PLUGIN_DIR="$CONFIG_DIR/plugins"
 
 source "$CONFIG_DIR/colors.sh"
 
-# Pre-compute all data in one pass
-monitor_count=$(aerospace list-monitors | wc -l | tr -d ' ')
+# Build aerospace -> sketchybar display mapping
+typeset -A DISPLAY_MAP
+while IFS=: read -r a s; do DISPLAY_MAP[$a]=$s; done < <("$CONFIG_DIR/plugins/display_map.sh")
+
+# Pre-compute all data in one pass — dynamic monitor support
 workspace_data=()
 
-for monitor in $(aerospace list-monitors); do
-  for sid in $(aerospace list-workspaces --monitor "$monitor"); do
+for monitor_id in $(aerospace list-monitors | awk '{print $1}'); do
+  sb_display="${DISPLAY_MAP[$monitor_id]:-1}"
+  for sid in $(aerospace list-workspaces --monitor "$monitor_id"); do
     [[ "$sid" == "0" ]] && continue
-    
-    if [[ "$monitor_count" -eq 2 && ("$sid" == "8" || "$sid" == "9" || "$sid" == "10") ]]; then
-      workspace_data+=("$sid:2")
-    else
-      workspace_data+=("$sid:1")
-    fi
+    workspace_data+=("$sid:$sb_display")
   done
 done
 

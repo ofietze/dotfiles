@@ -9,3 +9,4 @@
 --bind 'ctrl-d:deselect-all'
 --bind '?:toggle-preview'
 --bind 'ctrl-enter:execute(nvim {+})'
+--walker-skip .git,node_modules

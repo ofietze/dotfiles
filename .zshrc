@@ -10,7 +10,7 @@ fi
 
 source "$HOME/.local/share/zinit/zinit.git/zinit.zsh"
 autoload -Uz _zinit
-autoload -Uz compinit
+autoload -Uz compinit # Fix auto cd by loading compinit on start
 compinit
 (( ${+_comps} )) && _comps[zinit]=_zinit
 ### End of Zinit's installer chunk
@@ -32,7 +32,6 @@ zinit wait lucid light-mode for \
 zinit ice wait atload'_history_substring_search_config'
 
 export FZF_DEFAULT_OPTS_FILE="$HOME/.config/fzf/config"
-export FZF_COMPLETION_PATH_OPTS='--walker-skip .git,node_modules'
 
 # Custom aliases
 alias src="source ~/.zshrc"
@@ -42,8 +41,6 @@ alias zshrc="n ~/.zshrc"
 alias aero="n .aerospace.toml"
 alias sketch="n ./.config/sketchybar/"
 alias neo="n ./.config/nvim/"
-alias c="claude"
-alias cc="claude --continue"
 alias dev="cd ~/Developer"
 alias z="zellij"
 alias gs="git status"
