@@ -1,78 +1,42 @@
 #!/bin/bash
 
-# Optimized network plugin with reduced overhead and caching
+INTERFACE="en0"
+BYTES_IN_FILE="/tmp/sketchybar_bytes_in"
+BYTES_OUT_FILE="/tmp/sketchybar_bytes_out"
 
-# Allow execution on timer updates (no SENDER) and manual calls
+read -r bytes_in bytes_out <<< "$(netstat -ibn | awk -v iface="$INTERFACE" '$1==iface && $3 ~ /\./ {print $7, $10; exit}')"
 
-# Cache file locations
-CACHE_DIR="/tmp/sketchybar_cache"
-mkdir -p "$CACHE_DIR"
+prev_in=$(cat "$BYTES_IN_FILE" 2>/dev/null || echo 0)
+prev_out=$(cat "$BYTES_OUT_FILE" 2>/dev/null || echo 0)
 
-INTERFACE_CACHE="$CACHE_DIR/network_interface"
-PREV_FILE="$CACHE_DIR/network_data"
+echo "$bytes_in" > "$BYTES_IN_FILE"
+echo "$bytes_out" > "$BYTES_OUT_FILE"
 
-# Get network interface (cached)
-if [[ -f "$INTERFACE_CACHE" && -s "$INTERFACE_CACHE" ]]; then
-    INTERFACE=$(cat "$INTERFACE_CACHE")
+if [ "$prev_in" -gt 0 ] 2>/dev/null; then
+    down=$(( (bytes_in - prev_in) / 2 ))
+    up=$(( (bytes_out - prev_out) / 2 ))
 else
-    INTERFACE=$(route -n get default 2>/dev/null | awk '/interface:/ {print $2}' | head -1)
-    [[ -z "$INTERFACE" ]] && INTERFACE="en0"
-    echo "$INTERFACE" > "$INTERFACE_CACHE"
+    down=0
+    up=0
 fi
 
-# Get network stats efficiently
-NETWORK_DATA=$(netstat -I "$INTERFACE" -b 2>/dev/null | tail -1)
-[[ -z "$NETWORK_DATA" ]] && {
-    sketchybar --set "$NAME" label="No Network"
-    exit 0
-}
-
-# Extract bytes efficiently
-read -r _ _ _ _ _ _ DOWN_BYTES _ _ UP_BYTES _ <<< "$NETWORK_DATA"
-
-CURRENT_TIME=$(date +%s)
-
-# Read previous data
-if [[ -f "$PREV_FILE" ]]; then
-    IFS=$'\n' read -d '' -r PREV_DOWN PREV_UP PREV_TIME < "$PREV_FILE"
-else
-    PREV_DOWN=$DOWN_BYTES
-    PREV_UP=$UP_BYTES
-    PREV_TIME=$CURRENT_TIME
-fi
-
-# Calculate speeds
-TIME_DIFF=$((CURRENT_TIME - PREV_TIME))
-[[ $TIME_DIFF -le 0 ]] && TIME_DIFF=2
-
-DOWN_SPEED=$(((DOWN_BYTES - PREV_DOWN) / TIME_DIFF))
-UP_SPEED=$(((UP_BYTES - PREV_UP) / TIME_DIFF))
-
-# Ensure non-negative
-[[ $DOWN_SPEED -lt 0 ]] && DOWN_SPEED=0
-[[ $UP_SPEED -lt 0 ]] && UP_SPEED=0
-
-# Format speeds efficiently
 format_speed() {
-    local speed=$1
-    if [[ $speed -gt 1048576 ]]; then
-        echo "$((speed / 1048576))MB/s"
-    elif [[ $speed -gt 1024 ]]; then
-        echo "$((speed / 1024))KB/s"
+    local bytes=$1
+    if [ "$bytes" -ge 1048576 ]; then
+        printf "%.1f MBps" "$(echo "$bytes / 1048576" | bc -l)"
+    elif [ "$bytes" -ge 1024 ]; then
+        printf "%d KBps" "$((bytes / 1024))"
     else
-        echo "${speed}B/s"
+        printf "%03d Bps" "$bytes"
     fi
 }
 
-DOWN_FORMATTED=$(format_speed $DOWN_SPEED)
-UP_FORMATTED=$(format_speed $UP_SPEED)
+DOWN_LABEL=$(format_speed $down)
+UP_LABEL=$(format_speed $up)
 
-# Update display
-sketchybar --set "$NAME" label="↓$DOWN_FORMATTED ↑$UP_FORMATTED"
+DOWN_COLOR=$( [ "$down" -gt 0 ] && echo "0xff50fa7b" || echo "0xffaaaaaa" )
+UP_COLOR=$( [ "$up" -gt 0 ] && echo "0xff8be9fd" || echo "0xffaaaaaa" )
 
-# Cache current values atomically
-{
-    echo "$DOWN_BYTES"
-    echo "$UP_BYTES"
-    echo "$CURRENT_TIME"
-} > "$PREV_FILE"
+sketchybar \
+    --set wifi.down label="$DOWN_LABEL" icon.color="$DOWN_COLOR" label.color="$DOWN_COLOR" \
+    --set wifi.up label="$UP_LABEL" icon.color="$UP_COLOR" label.color="$UP_COLOR"
