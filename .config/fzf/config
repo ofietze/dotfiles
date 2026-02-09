@@ -1,0 +1,11 @@
+--height=40%
+--layout=reverse
+--border
+--preview-window=right:50%:wrap
+--preview 'sed -n \"1,200p\" {}'
+--bind 'ctrl-j:down,ctrl-k:up'
+--bind 'ctrl-space:toggle'
+--bind 'ctrl-a:select-all'
+--bind 'ctrl-d:deselect-all'
+--bind '?:toggle-preview'
+--bind 'ctrl-enter:execute(nvim {+})'
