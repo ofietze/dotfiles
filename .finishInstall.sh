@@ -12,6 +12,7 @@ brew install --cask karabiner-elements
 
 ### Terminal
 brew install zsh
+brew install fzf
 brew install neovim
 brew install zinit
 brew install starship
@@ -21,6 +22,7 @@ brew install zsh-history-substring-search
 brew install zsh-fast-syntax-highlighting
 brew install lazygit
 brew install zellij 
+brew install ical-buddy
 
 
 ### Fonts
