@@ -45,18 +45,23 @@ sketchybar \
            script="$PLUGIN_DIR/monitor_watcher.sh" \
   --add item clock right \
   --set clock update_freq=1 icon= script="$PLUGIN_DIR/consolidated_simple.sh" \
+        label.font="Hack Nerd Font:Bold:13.0" \
+        background.drawing=on background.color=0xaa353c3f background.corner_radius=5 background.height=20 background.padding_left=8 background.padding_right=8 \
   --add item battery right \
   --set battery update_freq=120 script="$PLUGIN_DIR/consolidated_simple.sh" \
+        label.font="Hack Nerd Font:Bold:13.0" icon.font="Hack Nerd Font:Bold:13.0" \
+        background.drawing=on background.color=0xaa353c3f background.corner_radius=5 background.height=20 background.padding_left=8 background.padding_right=8 \
   --subscribe battery system_woke power_source_change \
   --add item ram right \
   --set ram \
         icon="" \
-        icon.font="Hack Nerd Font:Bold:14.0" \
+        icon.font="Hack Nerd Font:Bold:13.0" \
         icon.color=0xff50fa7b \
-        label.font="Hack Nerd Font:Bold:10.0" \
+        label.font="Hack Nerd Font:Bold:13.0" \
         label.color=0xff50fa7b \
         update_freq=5 \
         script="$PLUGIN_DIR/ram.sh" \
+        background.drawing=on background.color=0xaa353c3f background.corner_radius=5 background.height=20 background.padding_left=8 background.padding_right=8 \
   --add item wifi.up right \
   --set wifi.up \
         padding_left=-5 \
@@ -65,12 +70,13 @@ sketchybar \
         icon.font="Hack Nerd Font:Bold:9.0" \
         icon.padding_right=0 \
         icon.color=0xffbf616a \
-        label.font="Hack Nerd Font:Bold:11.0" \
+        label.font="Hack Nerd Font:Bold:10.0" \
         label.color=0xffbf616a \
         label="000 Bps" \
-        y_offset=8 \
+        y_offset=6 \
         update_freq=1 \
         script="$PLUGIN_DIR/network.sh" \
+        background.drawing=off \
   --add item wifi.down right \
   --set wifi.down \
         padding_left=-5 \
@@ -78,10 +84,11 @@ sketchybar \
         icon.font="Hack Nerd Font:Bold:9.0" \
         icon.padding_right=0 \
         icon.color=0xff5e81ac \
-        label.font="Hack Nerd Font:Bold:11.0" \
+        label.font="Hack Nerd Font:Bold:10.0" \
         label.color=0xff5e81ac \
         label="000 Bps" \
-        y_offset=-5
+        y_offset=-6 \
+        background.drawing=on background.color=0xaa353c3f background.corner_radius=5 background.height=30 background.padding_left=8 background.padding_right=8
 
 # Batch all workspace creation
 workspace_args=()
