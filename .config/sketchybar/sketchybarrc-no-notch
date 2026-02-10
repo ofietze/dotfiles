@@ -43,6 +43,12 @@ sketchybar \
   --add item monitor_watcher left \
   --set monitor_watcher drawing=off update_freq=2 \
            script="$PLUGIN_DIR/monitor_watcher.sh" \
+  --add item calendar right \
+  --set calendar update_freq=30 icon="󰃰" script="$PLUGIN_DIR/calendar.sh" \
+        click_script="$PLUGIN_DIR/calendar_click.sh" \
+        icon.font="Hack Nerd Font:Bold:13.0" \
+        label.font="Hack Nerd Font:Bold:13.0" \
+        background.drawing=on background.color=0xaa353c3f background.corner_radius=5 background.height=20 background.padding_left=8 background.padding_right=8 \
   --add item clock right \
   --set clock update_freq=1 icon= script="$PLUGIN_DIR/consolidated_simple.sh" \
         label.font="Hack Nerd Font:Bold:13.0" \
