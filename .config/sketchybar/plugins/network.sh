@@ -27,7 +27,7 @@ format_speed() {
     elif [ "$bytes" -ge 1024 ]; then
         printf "%d KBps" "$((bytes / 1024))"
     else
-        printf "%03d Bps" "$bytes"
+        printf "%03d  Bps" "$bytes"
     fi
 }
 

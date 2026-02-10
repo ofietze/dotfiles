@@ -19,7 +19,7 @@ for monitor_id in $(aerospace list-monitors | awk '{print $1}'); do
 done
 
 sketchybar \
-  --bar position=top height=32 blur_radius=30 color=0xff000000 \
+  --bar position=top height=32 blur_radius=30 color=0xbb000000 \
   --default padding_left=5 padding_right=5 \
            icon.font="Hack Nerd Font:Bold:17.0" \
            label.font="SF Pro:Semibold:17.0" \
