@@ -45,7 +45,7 @@ alias dev="cd ~/Developer"
 alias z="zellij"
 alias gs="git status"
 alias l="ls -a"
-alias f="fzf"
+alias f="nvim \$(fzf -m)"
 alias commit="~./scripts/harver_git_commit.sh"
 
 # Init theme
