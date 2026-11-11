@@ -41,8 +41,8 @@ sketchybar \
         label.font="Hack Nerd Font:Bold:13.0" \
         label.padding_right=8 \
         background.border_width=2 background.border_color=0xAA7aa2f7 \
-  --add item progress right \
-  --set progress update_freq=30 icon= script="$PLUGIN_DIR/progress.sh" \
+  --add item date right \
+  --set date update_freq=30 icon= script="$PLUGIN_DIR/date.sh" \
         label.font="Hack Nerd Font:Bold:13.0" \
         label.padding_right=8 \
         background.border_width=2 background.border_color=0xAAff9e64 \

@@ -10,12 +10,14 @@ if [[ -z "$next" ]]; then
   exit 0
 fi
 
-title="${next##* | }"
-time_str="${next%% | *}"
+time_str="${next##* | }"
+title="${next%% | *}"
+title="${title#• }"
+start_time="${time_str%% - *}"
 
 # Extract meeting URL from notes/url fields
 details=$(icalBuddy -n -li 1 -nc -nrd -ea -npn -iep "notes,url" eventsToday 2>/dev/null)
-url=$(echo "$details" | grep -oE 'https://(teams\.microsoft\.com/l/meetup-join|zoom\.us/j|meet\.google\.com|webex\.com/meet)[^ )"<>]+' | head -1)
+url=$(echo "$details" | grep -oE 'https://(teams\.microsoft\.com/l/meetup-join|zoom\.us/j|meet\.google\.com|webex\.com/meet|eur03.safelinks.protection.outlook.com)[^ )"<>]+' | head -2 | tail -1)
 [[ -z "$url" ]] && url=$(echo "$details" | grep -oE 'https://[^ )"<>]+' | head -1)
 
 if [[ -n "$url" ]]; then
@@ -25,7 +27,7 @@ else
 fi
 
 now_epoch=$(date +%s)
-meeting_epoch=$(date -j -f "%H:%M" "$time_str" +%s 2>/dev/null)
+meeting_epoch=$(date -j -f "%H:%M" "$start_time" +%s 2>/dev/null)
 
 if [[ -z "$meeting_epoch" || "$meeting_epoch" -le "$now_epoch" ]]; then
   sketchybar --set $NAME label="Now: ${title:0:20}" icon="󰃰"
@@ -36,7 +38,7 @@ else
     m=$(( mins % 60 ))
     t="${h}h${m}m"
   else
-    t="${mins}min"
+    t="${mins}m"
   fi
-  sketchybar --set $NAME label="${t} to: '${title:0:20}'" icon="󰃰"
+  sketchybar --set $NAME label="${t} to '${title:0:15}'" icon="󰃰"
 fi
