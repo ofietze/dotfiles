@@ -716,6 +716,5 @@ function icon_map() {
 }
 ### END-OF-ICON-MAP
 
-icon_map "$1"
-
-echo "$icon_result"
+# When sourced (ICON_MAP_SOURCED=1) only define icon_map(); otherwise print the icon.
+[[ -n "${ICON_MAP_SOURCED:-}" ]] || { icon_map "$1"; echo "$icon_result"; }

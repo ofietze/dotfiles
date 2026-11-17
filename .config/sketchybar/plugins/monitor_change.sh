@@ -1,12 +1,4 @@
 #!/bin/bash
-
-# Monitor change detection script for sketchybar
-CONFIG_DIR="$HOME/.config/sketchybar"
-
-# Function to reconfigure workspaces based on monitor setup
-reconfigure_workspaces() {
-    "$CONFIG_DIR/plugins/update_workspace_icons.sh" reconfigure
-}
-
-# Call the reconfigure function
-reconfigure_workspaces
+# display_change handler: give aerospace a moment to see the new monitor layout, then refresh.
+sleep 1
+exec "$HOME/.config/sketchybar/plugins/update_workspace_icons.sh"

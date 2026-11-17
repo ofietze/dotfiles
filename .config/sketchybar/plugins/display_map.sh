@@ -1,12 +1,23 @@
 #!/usr/bin/env zsh
 # Maps aerospace monitor IDs to sketchybar display arrangement-ids.
 # Outputs: AERO_ID:SKETCHYBAR_ID lines, one per monitor.
-# Usage: declare -A DISPLAY_MAP; while IFS=: read a s; do DISPLAY_MAP[$a]=$s; done < <(this_script)
+# Result is cached; the slow swift lookup only reruns when the monitor setup changes.
 
-# Get NSScreen name -> CGDirectDisplayID
+CACHE=/tmp/sketchybar_display_map
+
+aero=$(aerospace list-monitors --format '%{monitor-id}|%{monitor-name}' 2>/dev/null)
+sb=$(sketchybar --query displays 2>/dev/null | jq -r '.[] | "\(.["arrangement-id"]):\(.DirectDisplayID)"')
+key="$aero"$'\n'"$sb"
+
+if [[ -f $CACHE && -f $CACHE.key && "$(<$CACHE.key)" == "$key" ]]; then
+  cat $CACHE
+  exit 0
+fi
+
+# NSScreen name -> CGDirectDisplayID
 typeset -A NAME_TO_DID
 while IFS=: read -r name did; do
-    NAME_TO_DID[$name]="$did"
+  NAME_TO_DID[$name]="$did"
 done < <(swift -e '
 import AppKit
 for s in NSScreen.screens {
@@ -15,23 +26,19 @@ for s in NSScreen.screens {
     print("\(n):\(d)")
 }' 2>/dev/null)
 
-# Get sketchybar DirectDisplayID -> arrangement-id
+# CGDirectDisplayID -> sketchybar arrangement-id
 typeset -A DID_TO_ARR
 while IFS=: read -r arr did; do
-    DID_TO_ARR[$did]="$arr"
-done < <(sketchybar --query displays 2>/dev/null | python3 -c "
-import sys,json
-for d in json.load(sys.stdin):
-    print(f\"{d['arrangement-id']}:{d['DirectDisplayID']}\")
-" 2>/dev/null)
+  DID_TO_ARR[$did]="$arr"
+done <<<"$sb"
 
-# Map: aerospace monitor-id -> name -> CGDisplayID -> sketchybar arrangement-id
-while IFS=$'\t' read -r aero_id aero_name; do
-    cg_did="${NAME_TO_DID[$aero_name]}"
-    sb_arr="${DID_TO_ARR[$cg_did]:-1}"
-    echo "$aero_id:$sb_arr"
-done < <(aerospace list-monitors --json 2>/dev/null | python3 -c "
-import sys,json
-for m in json.load(sys.stdin):
-    print(f\"{m['monitor-id']}\t{m['monitor-name']}\")
-" 2>/dev/null)
+# aerospace monitor-id -> name -> CGDisplayID -> arrangement-id
+out=""
+while IFS='|' read -r aero_id aero_name; do
+  [[ -z "$aero_id" ]] && continue
+  out+="$aero_id:${DID_TO_ARR[${NAME_TO_DID[$aero_name]}]:-1}"$'\n'
+done <<<"$aero"
+
+print -rn -- "$out" > $CACHE
+print -r -- "$key" > $CACHE.key
+print -rn -- "$out"
