@@ -75,6 +75,6 @@ export PATH="$BUN_INSTALL/bin:$PATH"
 export PATH="/Users/oliverfietze/.local/bin:$PATH"
 
 # Check for updates
-~/Developer/brew-check.sh
+~/scripts/brew-check.sh
 # Added by Kiro CLI
 case ":$PATH:" in *":$HOME/.local/bin:"*) ;; *) export PATH="${PATH:+$PATH:}$HOME/.local/bin" ;; esac

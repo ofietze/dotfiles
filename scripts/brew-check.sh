@@ -1,10 +1,10 @@
 #!/bin/bash
 
-# Check if brew update/upgrade has been run in the last 14 days.
+# Check if brew update/upgrade has been run in the last 5 days.
 # Tracks its own timestamps — no filesystem scanning needed.
 # Fast path: if both are fresh, exit silently and immediately.
 
-DAYS=14
+DAYS=5
 SECONDS_THRESHOLD=$((DAYS * 24 * 60 * 60))
 NOW=$(date +%s)
 STAMP_DIR="${XDG_STATE_HOME:-$HOME/.local/state}/brew-check"
