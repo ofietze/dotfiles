@@ -6,10 +6,10 @@ profile = "nocturne"
 theme = "gruvbox"
 
 [profiles.nocturne]
-center = ["media", "clock"]
+center = []
 leading = ["active-window", "workspaces", "omniwm"]
 theme = "dracula"
-trailing = ["battery", "volume", "control-center", "system-stats", "notifications"]
+trailing = ["media", "clock", "battery", "volume", "control-center", "system-stats", "notifications"]
 
 [profiles.nocturne.widgets]
 
