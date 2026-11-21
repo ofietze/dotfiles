@@ -50,7 +50,10 @@ alias z="zellij"
 alias gs="git status"
 alias l="ls -a"
 alias f="nvim \$(fzf -m)"
+alias c="claude"
+alias oc="opencode"
 alias commit="~./scripts/harver_git_commit.sh"
+alias yt="yt-dlp $1 -t mp4 -P ~/Downloads"
 
 # Init theme
 eval "$(starship init zsh)"
