@@ -65,9 +65,5 @@ echo "Setting up zsh..."
 chsh -s $(which zsh)
 source $HOME/.zshrc
 
-# Start Services
-echo "Starting Services (grant permissions)..."
-brew services start sketchybar
-
 csrutil status
 echo "Installation complete...\n"
