@@ -3,12 +3,11 @@ echo "Starting brew installs"
 ### Essentials
 brew install ripgrep
 brew install ifstat
-brew install sketchybar
 brew install npm
 
-brew install --cask nikitabobko/tap/aerospace
 brew install --cask visual-studio-code
 brew install --cask karabiner-elements
+brew install --cask omniwm
 
 ### Terminal
 brew install zsh
@@ -22,13 +21,6 @@ brew install zsh-history-substring-search
 brew install zsh-fast-syntax-highlighting
 brew install lazygit
 brew install zellij 
-brew install ical-buddy
-
-
-### Fonts
-brew install --cask font-sketchybar-app-font
-brew install --cask sf-symbols
-brew install --cask font-hack-nerd-font
 
 echo "Changing macOS defaults..."
 defaults write com.apple.NetworkBrowser BrowseAllInterfaces 1
