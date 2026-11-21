@@ -1,4 +1,3 @@
-
 ### Added by Zinit's installer
 if [[ ! -f $HOME/.local/share/zinit/zinit.git/zinit.zsh ]]; then
     print -P "%F{33} %F{220}Installing %F{33}ZDHARMA-CONTINUUM%F{220} Initiative Plugin Manager (%F{33}zdharma-continuum/zinit%F{220})…%f"
@@ -19,7 +18,6 @@ fi
 (( ${+_comps} )) && _comps[zinit]=_zinit
 ### End of Zinit's installer chunk
 setopt AUTO_CD # Allows to ommit cd
-
 
 # Plugins
 zinit wait lucid light-mode for \
@@ -62,19 +60,7 @@ eval "$(mise activate zsh)"
 
 export NODE_PATH=/opt/homebrew/lib/node_modules
 export PATH="$HOME/.local/bin:$PATH"
-export DOCKER_HOST="unix://$(podman machine inspect --format '{{.ConnectionInfo.PodmanSocket.Path}}')"
 
-# bun completions
-[ -s "/Users/oliverfietze/.bun/_bun" ] && source "/Users/oliverfietze/.bun/_bun"
-
-# bun
-export BUN_INSTALL="$HOME/.bun"
-export PATH="$BUN_INSTALL/bin:$PATH"
-
-# Added by codebase-memory-mcp install
-export PATH="/Users/oliverfietze/.local/bin:$PATH"
 
 # Check for updates
 ~/scripts/brew-check.sh
-# Added by Kiro CLI
-case ":$PATH:" in *":$HOME/.local/bin:"*) ;; *) export PATH="${PATH:+$PATH:}$HOME/.local/bin" ;; esac

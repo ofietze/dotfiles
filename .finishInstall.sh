@@ -20,7 +20,8 @@ brew install zsh-autosuggestions
 brew install zsh-history-substring-search
 brew install zsh-fast-syntax-highlighting
 brew install lazygit
-brew install zellij 
+brew install zellij
+brew install mise
 
 echo "Changing macOS defaults..."
 defaults write com.apple.NetworkBrowser BrowseAllInterfaces 1
