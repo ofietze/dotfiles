@@ -7,6 +7,31 @@ theme = "gruvbox"
 
 [profiles.nocturne]
 center = []
-leading = ["active-window", "workspaces"]
+leading = ["active-window", "workspaces", "omniwm"]
 theme = "dracula"
-trailing = ["omniwm", "media", "volume", "control-center", "system-stats", "battery-details", "clock", "notifications"]
+trailing = ["media", "volume", "control-center", "system-stats", "clock", "notifications"]
+
+[profiles.nocturne.widgets]
+
+[profiles.nocturne.widgets.battery-details]
+percent = "inside"
+
+[profiles.nocturne.workspaceBar]
+autoHide = false
+backgroundOpacity = 0.7000000000000001
+deduplicateAppIcons = true
+fullWidth = true
+fullWidthNotchMode = "splitAroundNotch"
+hideEmptyWorkspaces = true
+inactiveIconOpacity = 1.0
+notchActiveZoneWidth = 220.0
+notchMode = "rightOfNotch"
+position = "overlappingMenuBar"
+reserveLayoutSpace = true
+showAccentHighlights = true
+showItemBackgrounds = true
+showLabels = true
+solidBlackBackground = false
+transparentBackground = true
+windowLevel = "normal"
+xOffset = -0.0

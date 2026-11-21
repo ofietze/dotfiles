@@ -1180,10 +1180,6 @@ id = "toggleSystemStats"
 
 [[hotkeys]]
 binding = "Unassigned"
-id = "toggleShellWidget.battery-details"
-
-[[hotkeys]]
-binding = "Unassigned"
 id = "toggleShellWidget.clock"
 
 [[hotkeys]]
