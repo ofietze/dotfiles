@@ -1,0 +1,12 @@
+profile = "nocturne"
+
+[profiles]
+
+[profiles.default]
+theme = "gruvbox"
+
+[profiles.nocturne]
+center = []
+leading = ["active-window", "workspaces"]
+theme = "dracula"
+trailing = ["omniwm", "media", "volume", "control-center", "system-stats", "battery-details", "clock", "notifications"]
