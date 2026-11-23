@@ -5,11 +5,15 @@ profile = "nocturne"
 [profiles.default]
 theme = "gruvbox"
 
+[profiles.default.workspaceBar]
+hideEmptyWorkspaces = false
+reserveLayoutSpace = false
+
 [profiles.nocturne]
 center = []
 leading = ["active-window", "workspaces", "omniwm"]
 theme = "dracula"
-trailing = ["media", "clock", "battery", "volume", "control-center", "system-stats", "notifications"]
+trailing = ["media", "clock", "battery", "volume", "control-center", "system-stats"]
 
 [profiles.nocturne.widgets]
 
@@ -28,6 +32,7 @@ hoverPreviewsEnabled = false
 inactiveIconOpacity = 1.0
 notchActiveZoneWidth = 220.0
 notchMode = "rightOfNotch"
+notificationBadges = "text"
 position = "overlappingMenuBar"
 reserveLayoutSpace = true
 revealModifier = "off"
